@@ -22,9 +22,9 @@ abstract class SymfonyAbstractTask extends AbstractTask
     protected function getAppPath()
     {
         if ($this->getConfig()->general('symfony_version', '2') == '3') {
-            $defaultAppPath = 'bin/console';
+            $defaultAppPath = 'php bin/console';
         } else {
-            $defaultAppPath = 'app/console';
+            $defaultAppPath = 'php app/console';
         }
 
         return $this->getConfig()->general('symfony_app_path', $defaultAppPath);
