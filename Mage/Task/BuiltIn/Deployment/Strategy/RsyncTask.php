@@ -1,4 +1,4 @@
-<?php
+ <?php
 /*
  * This file is part of the Magallanes package.
 *
@@ -62,8 +62,8 @@ class RsyncTask extends BaseStrategyTaskAbstract implements IsReleaseAware
 
             $currentRelease = false;
             $deployToDirectory = rtrim($this->getConfig()->deployment('to'), '/')
-                               . '/' . $releasesDirectory
-                               . '/' . $this->getConfig()->getReleaseId();
+                . '/' . $releasesDirectory
+                . '/' . $this->getConfig()->getReleaseId();
 
             Console::log('Deploy to ' . $deployToDirectory);
             $resultFetch = $this->runCommandRemote('ls -ld ' . $symlink . ' | cut -d"/" -f2', $currentRelease);
@@ -76,7 +76,7 @@ class RsyncTask extends BaseStrategyTaskAbstract implements IsReleaseAware
                 if ($rsync_copy && is_array($rsync_copy) && $rsync_copy['copy'] && $this->runCommandRemote('test -d ' . $releasesDirectory . '/' . $currentRelease)) {
                     if (isset($rsync_copy['copy_tool_rsync'])) {
                         $this->runCommandRemote("rsync -a {$this->excludes(array_merge($excludes, $rsync_copy['rsync_excludes']))} "
-                                          . "$releasesDirectory/$currentRelease/ $releasesDirectory/{$this->getConfig()->getReleaseId()}");
+                            . "$releasesDirectory/$currentRelease/ $releasesDirectory/{$this->getConfig()->getReleaseId()}");
                     } else {
                         $this->runCommandRemote('cp -R ' . $releasesDirectory . '/' . $currentRelease . ' ' . $releasesDirectory . '/' . $this->getConfig()->getReleaseId());
                     }
@@ -95,15 +95,15 @@ class RsyncTask extends BaseStrategyTaskAbstract implements IsReleaseAware
         }
 
         $command = 'rsync -avz '
-                 . $strategyFlags . ' '
-                 . '--rsh="ssh ' . $this->getConfig()->getHostIdentityFileOption() . '-p' . $this->getConfig()->getHostPort() . '" '
-                 . $this->excludes($excludes) . ' '
-                 . $this->excludesListFile($excludesListFilePath) . ' '
-                 . $this->getConfig()->deployment('from') . ' '
-                 . $this->getConfig()->deployment('rsync-path') . ' '
-                 . ($this->getConfig()->deployment('user') ? $this->getConfig()->deployment('user') . '@' : '')
-                 . $this->getConfig()->getHostName() . ':' . $deployToDirectory. ' '
-                 . $this->getConfig()->deployment('rsync-options');
+            . $strategyFlags . ' '
+            . '--rsh="ssh ' . $this->getConfig()->getHostIdentityFileOption() . '-p' . $this->getConfig()->getHostPort() . '" '
+            . $this->excludes($excludes) . ' '
+            . $this->excludesListFile($excludesListFilePath) . ' '
+            . $this->getConfig()->deployment('from') . ' '
+            . $this->getConfig()->deployment('rsync-path') . ' '
+            . ($this->getConfig()->deployment('user') ? $this->getConfig()->deployment('user') . '@' : '')
+            . $this->getConfig()->getHostName() . ':' . $deployToDirectory. ' '
+            . $this->getConfig()->deployment('rsync-options');
 
         $result = $this->runCommandLocal($command);
 
